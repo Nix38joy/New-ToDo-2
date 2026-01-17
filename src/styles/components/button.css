@@ -1,0 +1,31 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    height: var(--input-height);
+    padding: 12px;
+    color: var(--color-gray-1);
+    background-color: var(--color-dark-2);
+    border: 1px solid var(--color-dark-2);
+    border-radius: var(--border-radius);
+
+    &:hover {
+        color: var(--color-dark-2);
+        background-color: transparent;
+    }
+
+    &:active {
+        scale: 1.05;
+    }
+}
+
+.todo__form[data-js-todo-new-task-form] .button {
+    color: var(--color-white);
+    background-color: #ff0000;
+    border: 1px solid #ff0000;
+
+    &:hover {
+        color: var(--color-white);
+        background-color: #cc0000;
+        border-color: #cc0000;
+    }
+}
