@@ -1,3 +1,139 @@
+// Класс для звуковых эффектов
+class SoundEffects {
+    constructor() {
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+    }
+
+    // Приятный звук при добавлении задачи
+    playAddTask() {
+        const now = this.audioContext.currentTime
+        const oscillator = this.audioContext.createOscillator()
+        const gainNode = this.audioContext.createGain()
+
+        oscillator.connect(gainNode)
+        gainNode.connect(this.audioContext.destination)
+
+        oscillator.frequency.setValueAtTime(523.25, now) // C5
+        oscillator.frequency.setValueAtTime(659.25, now + 0.1) // E5
+        
+        gainNode.gain.setValueAtTime(0.3, now)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3)
+
+        oscillator.start(now)
+        oscillator.stop(now + 0.3)
+    }
+
+    // Успешный звук при отметке задачи
+    playCheckTask() {
+        const now = this.audioContext.currentTime
+        const oscillator = this.audioContext.createOscillator()
+        const gainNode = this.audioContext.createGain()
+
+        oscillator.connect(gainNode)
+        gainNode.connect(this.audioContext.destination)
+
+        oscillator.frequency.setValueAtTime(659.25, now) // E5
+        oscillator.frequency.setValueAtTime(783.99, now + 0.05) // G5
+        
+        gainNode.gain.setValueAtTime(0.2, now)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2)
+
+        oscillator.start(now)
+        oscillator.stop(now + 0.2)
+    }
+
+    // Звук снятия галочки
+    playUncheckTask() {
+        const now = this.audioContext.currentTime
+        const oscillator = this.audioContext.createOscillator()
+        const gainNode = this.audioContext.createGain()
+
+        oscillator.connect(gainNode)
+        gainNode.connect(this.audioContext.destination)
+
+        oscillator.frequency.setValueAtTime(523.25, now) // C5
+        oscillator.frequency.setValueAtTime(392.00, now + 0.05) // G4
+        
+        gainNode.gain.setValueAtTime(0.15, now)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15)
+
+        oscillator.start(now)
+        oscillator.stop(now + 0.15)
+    }
+
+    // Низкий "бум" звук при удалении задачи
+    playDeleteTask() {
+        const now = this.audioContext.currentTime
+        const oscillator = this.audioContext.createOscillator()
+        const gainNode = this.audioContext.createGain()
+
+        oscillator.connect(gainNode)
+        gainNode.connect(this.audioContext.destination)
+
+        oscillator.type = 'sine'
+        oscillator.frequency.setValueAtTime(150, now)
+        oscillator.frequency.exponentialRampToValueAtTime(50, now + 0.25)
+        
+        gainNode.gain.setValueAtTime(0.4, now)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25)
+
+        oscillator.start(now)
+        oscillator.stop(now + 0.25)
+    }
+
+    // Драматичный звук удаления всех задач
+    playDeleteAll() {
+        const now = this.audioContext.currentTime
+        
+        // Первый тон
+        const osc1 = this.audioContext.createOscillator()
+        const gain1 = this.audioContext.createGain()
+        osc1.connect(gain1)
+        gain1.connect(this.audioContext.destination)
+        osc1.frequency.setValueAtTime(400, now)
+        osc1.frequency.exponentialRampToValueAtTime(50, now + 0.5)
+        gain1.gain.setValueAtTime(0.3, now)
+        gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.5)
+        osc1.start(now)
+        osc1.stop(now + 0.5)
+
+        // Второй тон (для глубины)
+        const osc2 = this.audioContext.createOscillator()
+        const gain2 = this.audioContext.createGain()
+        osc2.connect(gain2)
+        gain2.connect(this.audioContext.destination)
+        osc2.type = 'sawtooth'
+        osc2.frequency.setValueAtTime(600, now + 0.1)
+        osc2.frequency.exponentialRampToValueAtTime(80, now + 0.6)
+        gain2.gain.setValueAtTime(0.2, now + 0.1)
+        gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.6)
+        osc2.start(now + 0.1)
+        osc2.stop(now + 0.6)
+    }
+
+    // Звук ошибки (пустое поле)
+    playError() {
+        const now = this.audioContext.currentTime
+        const oscillator = this.audioContext.createOscillator()
+        const gainNode = this.audioContext.createGain()
+
+        oscillator.connect(gainNode)
+        gainNode.connect(this.audioContext.destination)
+
+        oscillator.type = 'sawtooth'
+        oscillator.frequency.setValueAtTime(200, now)
+        oscillator.frequency.setValueAtTime(180, now + 0.1)
+        oscillator.frequency.setValueAtTime(200, now + 0.2)
+        
+        gainNode.gain.setValueAtTime(0.15, now)
+        gainNode.gain.setValueAtTime(0.15, now + 0.2)
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3)
+
+        oscillator.start(now)
+        oscillator.stop(now + 0.3)
+    }
+}
+
 class Todo {
     selectors = {
        root: '[data-js-todo]',
@@ -32,6 +168,7 @@ class Todo {
         this.deleteAllButtonElement = this.rootElement.querySelector(this.selectors.deleteAllButton)
         this.listElement = this.rootElement.querySelector(this.selectors.list)
         this.emptyMessageElement = this.rootElement.querySelector(this.selectors.emptyMessage)
+        this.sound = new SoundEffects()
         this.state = {
             items: this.getItemsFromLocalStorage(),
             filteredItems: null,
@@ -67,6 +204,40 @@ class Todo {
             )
         }
 
+        highlightSearchText(text, searchQuery) {
+            if (!searchQuery || searchQuery.trim().length === 0) {
+                return text
+            }
+
+            const query = searchQuery.trim()
+            const queryLower = query.toLowerCase()
+            const textLower = text.toLowerCase()
+            
+            if (!textLower.includes(queryLower)) {
+                return text
+            }
+
+            let result = ''
+            let i = 0
+
+            while (i < text.length) {
+                const remainingText = text.slice(i)
+                const remainingTextLower = remainingText.toLowerCase()
+                const index = remainingTextLower.indexOf(queryLower)
+
+                if (index === -1) {
+                    result += remainingText
+                    break
+                }
+
+                result += remainingText.slice(0, index)
+                result += `<span class="todo-item__highlight">${remainingText.slice(index, index + query.length)}</span>`
+                i += index + query.length
+            }
+
+            return result
+        }
+
         render() {
             this.totalTaskElement.textContent = this.state.items.length
 
@@ -76,8 +247,12 @@ class Todo {
             )
 
             const items = this.state.filteredItems ?? this.state.items
+            const searchQuery = this.state.searchQuery || ''
 
-            this.listElement.innerHTML = items.map(({ id, title, isChecked}) => `
+            this.listElement.innerHTML = items.map(({ id, title, isChecked}) => {
+                const highlightedTitle = this.highlightSearchText(title, searchQuery)
+                
+                return `
              <li class="todo__item todo-item" data-js-todo-item>
            <input 
             class="todo-item__checkbox"
@@ -91,7 +266,7 @@ class Todo {
             for="${id}"
             data-js-todo-item-label
             >
-            ${title}
+            ${highlightedTitle}
             </label>
             <button 
             class="todo-item__delete-button" 
@@ -106,7 +281,8 @@ class Todo {
 
         </button>
         </li>
-            `).join('')
+            `
+            }).join('')
 
             const isEmptyFilteredItems = this.state.filteredItems?.length === 0
             const isEmptyItems = this.state.items.length === 0
@@ -123,19 +299,24 @@ class Todo {
                 title,
                 isChecked: false,
             })
+            this.sound.playAddTask()
             this.saveItemsToLocalStorage()
             this.render()
         }
 
         deleteItem(id) {
             this.state.items = this.state.items.filter((item) => item.id !== id)
+            this.sound.playDeleteTask()
             this.saveItemsToLocalStorage()
             this.render()
         }
 
         toggleCheckedState(id) {
+            let wasChecked = false
+            
             this.state.items = this.state.items.map((item) => {
                 if (item.id === id) {
+                    wasChecked = item.isChecked
                     return {
                         ...item,
                         isChecked: !item.isChecked,
@@ -144,6 +325,14 @@ class Todo {
 
                 return item
             })
+            
+            // Разные звуки для отметки и снятия отметки
+            if (wasChecked) {
+                this.sound.playUncheckTask()
+            } else {
+                this.sound.playCheckTask()
+            }
+            
             this.saveItemsToLocalStorage()
             this.render()
         }
@@ -175,6 +364,9 @@ class Todo {
                 this.resetFilter()
                 this.newTaskInputElement.value = ''
                 this.newTaskInputElement.focus()
+            } else {
+                // Звук ошибки при попытке добавить пустую задачу
+                this.sound.playError()
             }
         }
 
@@ -197,6 +389,7 @@ class Todo {
                 const isConfirmed = confirm('Are you sure you want to delete all?')
 
                 if (isConfirmed) {
+                    this.sound.playDeleteAll()
                     this.state.items = []
                     this.saveItemsToLocalStorage()
                     this.render()

@@ -5,7 +5,8 @@ body {
     min-height: 100vh;
     padding: 100px 30px;
     font-family: 'Inter', sans-serif;
-    background-color: var(--color-gray-1);
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+    background-attachment: fixed;
 }
 
 input,

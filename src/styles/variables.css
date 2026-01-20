@@ -10,6 +10,32 @@
     --color-gray-3: #b3b3b3;
     --color-gray-4: #757575;
 
+    /* Цветовая палитра - темно-зеленая тема */
+    --color-primary: #065f46;
+    --color-primary-hover: #047857;
+    --color-primary-light: #d1fae5;
+    --color-primary-dark: #064e3b;
+    
+    --color-success: #10b981;
+    --color-success-hover: #059669;
+    --color-success-light: #d1fae5;
+    
+    --color-danger: #ef4444;
+    --color-danger-hover: #dc2626;
+    --color-danger-light: #fee2e2;
+    
+    --color-warning: #f59e0b;
+    --color-warning-hover: #d97706;
+    --color-warning-light: #fef3c7;
+    
+    --color-info: #3b82f6;
+    --color-info-hover: #2563eb;
+    --color-info-light: #dbeafe;
+    
+    --color-purple: #8b5cf6;
+    --color-purple-hover: #7c3aed;
+    --color-purple-light: #ede9fe;
+
     --border: 1px solid var(--color-gray-2);
     --border-radius: 8px;
 

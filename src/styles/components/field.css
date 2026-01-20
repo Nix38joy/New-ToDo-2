@@ -4,7 +4,12 @@
     &:has(.field__input:not(:placeholder-shown)) .field__label {
         scale: 0.7;
         translate: -1.75em -2.6em;
-        color: var(--color-black);
+        color: #065f46;
+        font-weight: 600;
+    }
+    
+    &:has(.field__input[type="search"]:not(:placeholder-shown)) .field__label {
+        color: #047857;
     }
 }
 .field__label {
@@ -23,17 +28,21 @@
     height: var(--input-height);
     padding-inline: var(--fieldInputPaddingX);
     background-color: transparent;
-    border: var(--border);
+    border: 2px solid var(--color-gray-2);
     border-radius: var(--border-radius);
+    transition: all var(--transition-duration);
 
-    &:hover,
-    &:focus {
+    &:hover {
         color: var(--color-dark-2);
+        border-color: #065f46;
     }
 
     &:focus {
-        background-color: var(--color-gray-1);
+        color: var(--color-dark-2);
+        background-color: #d1fae5;
+        border-color: #065f46;
         outline: none;
+        box-shadow: 0 0 0 3px rgba(6, 95, 70, 0.1);
     }
 
     &[type="search"] {
@@ -41,6 +50,12 @@
             padding-right: calc(
                 var(--fieldInputPaddingX) * 2 + var(--fieldSearchInputIconSize)
             );
+        }
+        
+        &:focus {
+            border-color: #047857;
+            background-color: #d1fae5;
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
         }
     }
 }

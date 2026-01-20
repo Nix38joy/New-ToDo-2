@@ -7,9 +7,9 @@
     min-height: 429px;
     padding: 24px;
     background-color: var(--color-white);
-    border: var(--border);
+    border: 2px solid var(--color-gray-2);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 8px 24px rgba(6, 95, 70, 0.25), 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .todo__title {
@@ -18,6 +18,10 @@
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #065f46 0%, #047857 50%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .todo__form {
@@ -37,13 +41,29 @@
     font-weight: 600;
 }
 
+.todo__total-tasks {
+    color: var(--color-gray-4);
+    
+    span {
+        color: #065f46;
+        font-size: 1.1em;
+        font-weight: 700;
+    }
+}
+
 .todo__delete-all-button {
-    padding: 0;
+    padding: 6px 12px;
+    color: var(--color-danger);
     background-color: transparent;
-    border: none;
+    border: 1px solid var(--color-danger);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
 
     &:hover {
-        color: var(--color-gray-4);
+        color: var(--color-white);
+        background-color: var(--color-danger);
+        border-color: var(--color-danger-hover);
     }
 
     &:not(.is-visible) {
@@ -69,5 +89,10 @@
 .todo__empty-message {
     text-align: center;
     color: var(--color-gray-4);
+    padding: 20px;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border-radius: var(--border-radius);
+    border: 2px dashed #065f46;
+    font-weight: 500;
 }
 

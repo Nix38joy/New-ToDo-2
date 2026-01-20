@@ -20,12 +20,22 @@
 
 .todo__form[data-js-todo-new-task-form] .button {
     color: var(--color-white);
-    background-color: #ff0000;
-    border: 1px solid #ff0000;
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    border: 1px solid #065f46;
+    box-shadow: 0 4px 12px rgba(6, 95, 70, 0.3);
+    font-weight: 600;
+    transition: all var(--transition-duration);
 
     &:hover {
         color: var(--color-white);
-        background-color: #cc0000;
-        border-color: #cc0000;
+        background: linear-gradient(135deg, #047857 0%, #059669 100%);
+        border-color: #047857;
+        box-shadow: 0 6px 16px rgba(6, 95, 70, 0.4);
+        transform: translateY(-2px);
+    }
+    
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(6, 95, 70, 0.3);
     }
 }
